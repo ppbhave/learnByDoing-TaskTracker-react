@@ -1,0 +1,9 @@
+.todoForm {
+    margin: 0 auto 0 auto;
+    max-width: 50%;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}

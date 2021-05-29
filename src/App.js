@@ -1,25 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Header from "./components/header";
+import Footer from "./components/footer";
+import { useState } from "react";
+import ToDoList from "./components/ToDoList";
+import Addtodo from "./components/Addtodo";
 function App() {
-  return (
+
+  const [todos, setTodos] = useState([
+    {
+        id:1,
+        task: "Write a new blog post.",
+        done: false
+    },
+    {
+        id:2,
+        task: "Pick up laundry.",
+        done: false
+    },
+    {
+        id:3,
+        task: "Die.",
+        done: false
+    }
+]);
+
+  const deleteItem = (item) => {
+    setTodos(
+      todos.filter(todo => todo != item )
+    )
+  };
+
+  const addToDo = (taskElement) => {
+    if(taskElement.value === "")
+    {
+      alert("Please describe the task.")
+    }
+    else{
+    let toDo = {
+      id: todos.length==0 ? 0 :todos[todos.length - 1].id + 1,
+      task: taskElement.value,
+      done: false
+    };
+    taskElement.value = "";
+    setTodos([...todos, toDo]);
+  }
+};
+
+  return ( 
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Addtodo addToDo = {addToDo} />
+      <ToDoList
+        todos  = { todos }
+        deleteItem={ deleteItem }
+      />
+      <Footer />
     </div>
   );
 }
-
 export default App;
