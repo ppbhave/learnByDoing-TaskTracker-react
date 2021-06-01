@@ -1,30 +1,41 @@
 import Header from "./components/header";
 import Footer from "./components/footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToDoList from "./components/ToDoList";
 import Addtodo from "./components/Addtodo";
+
 function App() {
 
-  const [todos, setTodos] = useState([
-    {
-        id:1,
-        task: "Write a new blog post.",
-        done: false
-    },
-    {
-        id:2,
-        task: "Pick up laundry.",
-        done: false
-    },
-    {
-        id:3,
-        task: "Die.",
-        done: false
-    }
-]);
+  const getTodoLists = () => {
+    return JSON.parse(localStorage.getItem("todoLists"));
+  }
+
+  const [todoLists,updateTodoLists] =useState(getTodoLists() ? getTodoLists() : []);
+  const [displayElements,updateDisplay] =useState( todoLists.length > 0 ? true : false );
+  const [index,setIndex]= useState(todoLists.length > 0 ? todoLists.length-1 : 0);
+  const [todos, setTodos] = useState(todoLists.length > 0 ? todoLists[index].todos : []);
+  const [listTitle, setTitle] = useState(todoLists.length >0 ? todoLists[index].title: "");
+
+  useEffect(() => {
+    updateDisplay(todoLists.length > 0 ? true : false);
+    console.log(displayElements);
+    setIndex(todoLists.length > 0 ? todoLists.length-1 : 0);
+}, [todoLists])
+
+useEffect(() => {
+  console.log(index);
+  setTodos(todoLists.length > 0 ? todoLists[index].todos : []);
+  setTitle(todoLists.length > 0 ? todoLists[index].title : "");
+}, [index])
+
+
+  const setTodoLists = (tlists) => {
+    localStorage.setItem("todoLists",JSON.stringify(tlists));
+    updateTodoLists(tlists);
+  }
 
   const deleteItem = (item) => {
-    setTodos(
+    setTodos( 
       todos.filter(todo => todo != item )
     )
   };
@@ -45,13 +56,51 @@ function App() {
   }
 };
 
+const addList = (titleElement) => {
+  if(titleElement.value === "")
+  {
+    alert("Please describe the title.")
+  }
+  else{
+  let todoList = {
+    title : titleElement.value,
+    todos: []
+  };
+  titleElement.value = "";
+  setTodoLists([...todoLists,todoList]);
+  setTodos(todoList.todos);
+}
+};
+
+const deleteList = () => {
+  setTodoLists(todoLists.filter(tlist => tlist != todoLists[index]));
+}
+
+const listSelector = ( i ) => {
+  if (window.confirm("Any unsaved changes will be lost. Wish to continue?")) {
+    setIndex(i);
+    setTitle(todoLists[i].title);
+    setTodos(todoLists[i].todos);
+  }
+}
+
+const savetodos = () => {
+  todoLists[index].todos=todos;
+  setTodoLists(todoLists);
+}
+
   return ( 
     <div className="App">
-      <Header />
-      <Addtodo addToDo = {addToDo} />
+      <Header todoLists = {todoLists} listSelector={ listSelector } addList={ addList }/>
+      <Addtodo addToDo = {addToDo} displayNeeded = { displayElements }/>
       <ToDoList
         todos  = { todos }
         deleteItem={ deleteItem }
+        index={index}
+        title={listTitle}
+        displayNeeded = {displayElements}
+        deleteList = { deleteList }
+        savetodos = {savetodos}
       />
       <Footer />
     </div>

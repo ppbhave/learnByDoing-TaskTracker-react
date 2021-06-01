@@ -1,3 +1,7 @@
 .headerComponent {
     background-color: blue
   }
+
+  .selectListForm {
+    min-width: 20vh;
+  }

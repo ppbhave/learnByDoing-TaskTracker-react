@@ -2,9 +2,29 @@
     position:static;
     align-items: center;
     margin: 0 auto 0 auto;
-    max-width: 50%;
-    max-height: 40vh;
-    overflow: auto;
+    max-width: 80%;
+    max-height: 35vh;
+    border-radius: 20px;
+}
+
+.todolist-container {
+  margin: 0 auto 0 auto;
+  max-width: 50%;
+  max-height: 50vh;
+  background-color:burlywood;
+  border-radius: 20px;
+  box-shadow: 10px 10px 5px 5px #282c34;
+  overflow: auto;
+}
+
+.todoListheader  {
+    margin: 0 auto 0 auto;
+    padding-left: 30%;
+    display: flex;
+}
+
+.todoListheader > .btn-danger {
+    margin-left: 30%;
 }
 
 .todo {
@@ -14,8 +34,22 @@
     box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.15);
     padding: 3px 10px;
     font-size: 20px;
-    justify-content: space-between;
 }
 .close {
     align-self: flex-end;
+}
+
+.card-body .card {
+    
+    align-items: center;
+    margin: 0 auto 0 auto;
+    max-width: 50%;
+}
+
+.hidenElement {
+    visibility:hidden ;
+}
+
+.showElement {
+    visibility:visible ;
 }
